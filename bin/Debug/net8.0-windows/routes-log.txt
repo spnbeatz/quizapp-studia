@@ -1,0 +1,10 @@
+[ROUTER ROUTES LOG] 20.06.2025 21:10:24
+Route: 'dashboard' => Type: projekt.Screens.DashboardScreen
+Route: 'login' => Type: projekt.Screens.LoginScreen
+Route: 'profile' => Type: projekt.Screens.ProfileScreen
+Route: 'quizform' => Type: projekt.Screens.QuizFormScreen
+Route: 'register' => Type: projekt.Screens.RegisterScreen
+Route: 'search' => Type: projekt.Screens.SearchScreen
+Route: 'solvequiz' => Type: projekt.Screens.SolveQuizScreen
+Route: 'startup' => Type: projekt.Screens.StartupScreen
+Route: 'summary' => Type: projekt.Screens.SummaryScreen
