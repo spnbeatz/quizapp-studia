@@ -7,7 +7,7 @@ using projekt.Models;
 
 namespace projekt.Interfaces
 {
-    public interface ISearchService : IDisposable
+    public interface ISearchService
     {
         Task<List<SearchIndexItem>> SearchAsync(string query, string? entityType = null);
     }

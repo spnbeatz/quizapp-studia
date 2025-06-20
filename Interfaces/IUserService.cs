@@ -7,7 +7,7 @@ using projekt.Models;
 
 namespace projekt.Interfaces
 {
-    public interface IUserService : IDisposable
+    public interface IUserService
     {
         User? AuthenticateUser(string username, string password);
         string? GetUserPasswordHash(string username);

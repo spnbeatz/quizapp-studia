@@ -16,18 +16,16 @@ namespace projekt.Services
     internal class UserService : IUserService
     {
         private readonly IDatabase _database;
-        private readonly NpgsqlConnection _conn;
 
         public UserService(IDatabase database)
         {
             _database = database;
-            _conn = _database.GetConnection();
         }
 
         public User? AuthenticateUser(string username, string password)
         {
 
-
+            using var _conn = _database.GetConnection();
             var cmd = new NpgsqlCommand("SELECT id, username FROM users WHERE username = @username AND password = @password", _conn);
             cmd.Parameters.AddWithValue("username", username);
             cmd.Parameters.AddWithValue("password", password);
@@ -47,6 +45,7 @@ namespace projekt.Services
 
         public string? GetUserPasswordHash(string username)
         {
+            using var _conn = _database.GetConnection();
             using var cmd = new NpgsqlCommand("SELECT password FROM users WHERE username = @username", _conn);
             cmd.Parameters.AddWithValue("username", username);
 
@@ -61,6 +60,7 @@ namespace projekt.Services
 
         public bool RegisterUser(string username, string password)
         {
+            using var _conn = _database.GetConnection();
             var checkCmd = new NpgsqlCommand("SELECT COUNT(*) FROM users WHERE username = @username", _conn);
             checkCmd.Parameters.AddWithValue("username", username);
             var exists = (long)checkCmd.ExecuteScalar();
@@ -77,7 +77,7 @@ namespace projekt.Services
 
         public User? GetUserById(int userId)
         {
-
+            using var _conn = _database.GetConnection();
             var cmd = new NpgsqlCommand("SELECT id, username FROM users WHERE id = @id", _conn);
             cmd.Parameters.AddWithValue("id", userId);
 
@@ -94,9 +94,5 @@ namespace projekt.Services
             return null;
         }
 
-        public void Dispose()
-        {
-            _conn?.Dispose();
-        }
     }
 }

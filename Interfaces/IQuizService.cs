@@ -7,7 +7,7 @@ using projekt.Models;
 
 namespace projekt.Interfaces
 {
-    public interface IQuizService : IDisposable
+    public interface IQuizService
     {
         Task CreateQuizAsync(Quiz quizData);
         Task<List<Quiz>> GetQuizzesAsync(int? userId = null);

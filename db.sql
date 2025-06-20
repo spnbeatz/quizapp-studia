@@ -104,23 +104,29 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION update_search_index()
 RETURNS TRIGGER AS $$
+DECLARE
+  content TEXT;
 BEGIN
   IF TG_OP = 'DELETE' THEN
-    DELETE FROM search_index WHERE entity_type = TG_TABLE_NAME AND entity_id = OLD.id;
+    DELETE FROM search_index
+    WHERE entity_type = TG_TABLE_NAME AND entity_id = OLD.id;
   ELSE
+    IF TG_TABLE_NAME = 'users' THEN
+      content := NEW.username;
+    ELSIF TG_TABLE_NAME = 'quizzes' THEN
+      content := CONCAT(NEW.title, ' ', COALESCE(NEW.description, ''));
+    END IF;
+
     INSERT INTO search_index (entity_type, entity_id, content)
-    VALUES (TG_TABLE_NAME, NEW.id,
-        CASE
-            WHEN TG_TABLE_NAME = 'users' THEN NEW.username
-            WHEN TG_TABLE_NAME = 'quizzes' THEN CONCAT(NEW.title, ' ', COALESCE(NEW.description, ''))
-        END
-    )
+    VALUES (TG_TABLE_NAME, NEW.id, content)
     ON CONFLICT (entity_type, entity_id) DO UPDATE
     SET content = EXCLUDED.content;
   END IF;
+
   RETURN NULL;
 END;
 $$ LANGUAGE plpgsql;
+
 
 CREATE OR REPLACE FUNCTION create_quiz_stats_entry()
 RETURNS TRIGGER AS $$

@@ -12,16 +12,15 @@ namespace projekt.Services
     internal class SearchService : ISearchService
     {
         private readonly IDatabase _database;
-        private readonly NpgsqlConnection _conn;
 
         public SearchService(IDatabase database)
         {
             _database = database;
-            _conn = _database.GetConnection();
         }
 
         public async Task<List<SearchIndexItem>> SearchAsync(string query, string? entityType = null)
         {
+            await using var _conn = _database.GetConnection();
             var results = new List<SearchIndexItem>();
 
             var sql = @"
@@ -55,11 +54,5 @@ namespace projekt.Services
             return results;
         }
 
-
-
-        public void Dispose()
-        {
-            _conn?.Dispose();
-        }
     }
 }

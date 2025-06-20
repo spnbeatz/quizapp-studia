@@ -1,4 +1,4 @@
-[ROUTER ROUTES LOG] 20.06.2025 21:10:24
+[ROUTER ROUTES LOG] 20.06.2025 21:46:10
 Route: 'dashboard' => Type: projekt.Screens.DashboardScreen
 Route: 'login' => Type: projekt.Screens.LoginScreen
 Route: 'profile' => Type: projekt.Screens.ProfileScreen

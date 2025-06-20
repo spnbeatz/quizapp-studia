@@ -19,18 +19,16 @@ namespace projekt.Services
     internal class QuizService : IQuizService
     {
         private readonly IDatabase _database;
-        private readonly NpgsqlConnection _conn;
 
         public QuizService(IDatabase database)
         {
             _database = database;
-            _conn = _database.GetConnection();
         }
 
         public async Task CreateQuizAsync(Quiz quizData)
         {
+            await using var _conn = _database.GetConnection();
             await using var transaction = await _conn.BeginTransactionAsync();
-            MessageBox.Show("CreateQuiz");
 
             try
             {
@@ -84,6 +82,7 @@ namespace projekt.Services
             {
                 await transaction.RollbackAsync();
                 MessageBox.Show("Błąd zapisu do bazy: " + ex.Message);
+                Debug.WriteLine(ex.ToString());
             }
         }
 
@@ -92,6 +91,7 @@ namespace projekt.Services
         {
             try
             {
+                await using var _conn = _database.GetConnection();
                 var quizzes = new List<Quiz>();
 
                 await using var cmd = new NpgsqlCommand(@"
@@ -127,6 +127,7 @@ namespace projekt.Services
         {
             try
             {
+                await using var _conn = _database.GetConnection();
                 var quiz = await GetQuizOnlyAsync(quizId);
                 if (quiz == null)
                     return null;
@@ -150,6 +151,7 @@ namespace projekt.Services
 
         public async Task<Quiz> GetQuizOnlyAsync(int quizId)
         {
+            await using var _conn = _database.GetConnection();
             await using var cmd = new NpgsqlCommand("SELECT id, title, description, level, userId FROM quizzes WHERE id = @quizId", _conn);
             cmd.Parameters.AddWithValue("quizId", quizId);
 
@@ -172,6 +174,7 @@ namespace projekt.Services
 
         public async Task<List<Question>> GetQuestionsForQuizAsync(int quizId)
         {
+            await using var _conn = _database.GetConnection();
             var questions = new List<Question>();
 
             await using var cmd = new NpgsqlCommand("SELECT id, text, questiontype FROM questions WHERE quizid = @quizId", _conn);
@@ -194,6 +197,7 @@ namespace projekt.Services
 
         public async Task<List<Answer>> GetAnswersForQuestionAsync(int questionId)
         {
+            await using var _conn = _database.GetConnection();
             var answers = new List<Answer>();
 
             await using var cmd = new NpgsqlCommand("SELECT id, text, iscorrect FROM answers WHERE questionid = @questionId", _conn);
@@ -217,6 +221,7 @@ namespace projekt.Services
         {
             try
             {
+                await using var _conn = _database.GetConnection();
                 var quizzes = new List<QuizSummaryItem>();
 
                 await using var cmd = new NpgsqlCommand(@"
@@ -254,6 +259,7 @@ namespace projekt.Services
 
         public async Task<bool> UpdateQuizAsync(Quiz quizData, int? quizId)
         {
+            await using var _conn = _database.GetConnection();
             await using var transaction = await _conn.BeginTransactionAsync();
             MessageBox.Show($"{quizId.Value}");
 
@@ -330,6 +336,7 @@ namespace projekt.Services
 
         public async Task<bool> DeleteQuizAsync(int quizId)
         {
+            await using var _conn = _database.GetConnection();
             await using var transaction = await _conn.BeginTransactionAsync();
 
             try
@@ -373,6 +380,7 @@ namespace projekt.Services
         {
             try
             {
+                await using var _conn = _database.GetConnection();
                 var cmd = new NpgsqlCommand(@"
                     SELECT quiz_id, times_solved, last_solved_at, earned_points, total_points, average_score
                     FROM quiz_stats WHERE quiz_id = @quizId", _conn);
@@ -411,7 +419,7 @@ namespace projekt.Services
         {
             try
             {
-
+                await using var _conn = _database.GetConnection();
                 var cmd = new NpgsqlCommand(@"
                     UPDATE quiz_stats
                     SET
@@ -432,13 +440,6 @@ namespace projekt.Services
             {
                 Debug.WriteLine($"Błąd przy aktualizacji quiz_stats: {ex.Message}");
             }
-        }
-
-
-
-        public void Dispose()
-        {
-            _conn?.Dispose();
         }
     }
 }

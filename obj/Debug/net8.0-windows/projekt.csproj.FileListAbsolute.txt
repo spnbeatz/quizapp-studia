@@ -43,3 +43,4 @@ C:\Users\spnbe\Desktop\projekt\projekt\bin\Debug\net8.0-windows\Assets\search_li
 C:\Users\spnbe\Desktop\projekt\projekt\bin\Debug\net8.0-windows\Assets\delete.png
 C:\Users\spnbe\Desktop\projekt\projekt\bin\Debug\net8.0-windows\Assets\delete_dark.png
 C:\Users\spnbe\Desktop\projekt\projekt\bin\Debug\net8.0-windows\Assets\delete_light.png
+C:\Users\spnbe\Desktop\projekt\projekt\obj\Debug\net8.0-windows\projekt.sourcelink.json
