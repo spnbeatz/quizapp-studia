@@ -1,6 +1,7 @@
 ﻿// Połączenie z bazą danych
 
 using System.Configuration;
+using System.Diagnostics;
 using Npgsql;
 using projekt.Interfaces;
 
@@ -8,7 +9,7 @@ namespace projekt.Data
 {
     public class Database : IDatabase
     {
-        private readonly string _connectionString;
+        private string _connectionString;
 
         public Database()
         {
@@ -17,9 +18,17 @@ namespace projekt.Data
 
         public NpgsqlConnection GetConnection()
         {
-            var connection = new NpgsqlConnection(_connectionString);
-            connection.Open();
-            return connection;
+            try
+            {
+                var connection = new NpgsqlConnection(_connectionString);
+                connection.Open();
+                return connection;
+            } catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                return null;
+            }
+
         }
     }
 }

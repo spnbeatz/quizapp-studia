@@ -195,7 +195,7 @@ namespace projekt.Screens
             {
                 _mainPanel.Controls.Add(_finishQuiz = new Button
                 {
-                    Text = "Finish",
+                    Text = "Zakończ",
                     Width = 490,
                     FlatStyle = FlatStyle.Flat,
                     Height = 50,
@@ -215,8 +215,11 @@ namespace projekt.Screens
                 _rootLayout.Controls.Remove(existingControl);
                 existingControl.Dispose();
             }
-
-            _rootLayout.Controls.Add(new QuizStatsPanel(stats), 0, 1);
+            if (stats != null)
+            {
+                _rootLayout.Controls.Add(new QuizStatsPanel(stats), 0, 1);
+            }
+            
 
         }
 

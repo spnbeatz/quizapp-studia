@@ -342,6 +342,13 @@ namespace projekt.Services
             try
             {
 
+                await using (var statcmd = new NpgsqlCommand("DELETE FROM quiz_stats WHERE quiz_id = @quizId", _conn, transaction))
+                {
+                    statcmd.Parameters.AddWithValue("quizId", quizId);
+                    await statcmd.ExecuteNonQueryAsync();
+                }
+
+
                 await using (var cmd = new NpgsqlCommand(
                     @"DELETE FROM answers WHERE questionid IN (SELECT id FROM questions WHERE quizid = @quizId)", _conn, transaction))
                 {

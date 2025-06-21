@@ -42,14 +42,14 @@ namespace projekt.Forms.Components
             _earnedPoints = new Label
             {
                 Dock = DockStyle.Fill,
-                Text = $"Zdobyto łącznie {_stats.EarnedPoints} na {_stats.TotalPoints} punktów",
+                Text = $"Zdobyto łącznie {_stats.EarnedPoints:F2} na {_stats.TotalPoints} punktów",
                 Font = new Font("Segoe UI", 10F)
             };
 
             _averageScore = new Label
             {
                 Dock = DockStyle.Fill,
-                Text = $"Średni wynik: {_stats.AverageScore}",
+                Text = $"Średni wynik: {_stats.AverageScore:F2}",
                 Font = new Font("Segoe UI", 10F)
             };
 

@@ -26,7 +26,7 @@ namespace projekt.Forms.Components
 
             InitializeComponent();
             QuizEvents.QuizAdded += (s, e) => LoadQuizzesAsync(userId);
-            QuizEvents.QuizRemoved += (s, e) => RemoveQuiz(e.QuizId);
+            QuizEvents.QuizRemoved += (s, e) => RemoveQuiz(e.QuizId, userId);
             LoadQuizzesAsync(userId);
         }
 
@@ -69,7 +69,7 @@ namespace projekt.Forms.Components
             }
         }
 
-        private async Task RemoveQuiz(int quizId)
+        private async Task RemoveQuiz(int quizId, int? userId)
         {
             var confirm = MessageBox.Show(
                 $"Czy na pewno chcesz usunąć quiz?",
@@ -80,6 +80,12 @@ namespace projekt.Forms.Components
 
             if (confirm == DialogResult.Yes) {
                 bool result = await _quizService.DeleteQuizAsync(quizId);
+
+                if (result)
+                {
+                    MessageBox.Show("Usunieto Quiz!");
+                    LoadQuizzesAsync(userId);
+                }
             } 
 
             
