@@ -34,20 +34,6 @@ namespace projekt.Models
         public bool IsCorrect { get; set; }
     }
 
-    public enum DifficultyLevel
-    {
-        Easy,
-        Medium,
-        Hard
-    }
-
-    public enum QuestionType
-    {
-        SingleChoice,
-        MultipleChoice,
-    }
-
-
     public class QuizItem
     {
         public string Name { get; set; } = String.Empty;
